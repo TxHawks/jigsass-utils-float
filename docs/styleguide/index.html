@@ -1,0 +1,404 @@
+<!doctype html>
+<title>jigsass-utils-float</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="style.css?05" rel="stylesheet">
+<link href="jigsass-logo.png" rel="shortcut icon">
+<script type="text/javascript">WebFontConfig={google:{families:["Roboto:400,100,300,500:latin"]}},function(){var e=document.createElement("script");e.src="https://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js",e.type="text/javascript",e.async="true";var t=document.getElementsByTagName("script")[0];t.parentNode.insertBefore(e,t)}();</script>
+<script>examples={"base":"","target":"_self","css":["assets/sg.css"],"js":[],"bodyjs":[],"htmlcss":"background:none;border:0;clip:auto;display:block;height:auto;margin:0;padding:0;position:static;width:auto","bodycss":"background:none;border:0;clip:auto;display:block;height:auto;margin:0;padding:0;position:static;width:auto"};</script>
+
+<header>
+	<nav>
+		<img src="jigsass-logo.png" alt="jigsass-utils-float">
+		
+	<ul>
+		
+				<li>
+					<a href="#float-utils"><span>Float Utils</span></a>
+					
+	<ul>
+		
+				<li>
+					<a href="#introduction"><span>Introduction</span></a>
+					
+				</li>
+				
+				<li>
+					<a href="#float-start"><span>float start</span></a>
+					
+				</li>
+				
+				<li>
+					<a href="#float-end"><span>float end</span></a>
+					
+				</li>
+				
+				<li>
+					<a href="#float-none"><span>float none</span></a>
+					
+				</li>
+				
+				<li>
+					<a href="#float-right"><span>float right</span></a>
+					
+				</li>
+				
+				<li>
+					<a href="#float-left"><span>float left</span></a>
+					
+				</li>
+				
+				<li>
+					<a href="#clear-start"><span>clear start</span></a>
+					
+				</li>
+				
+				<li>
+					<a href="#clear-end"><span>clear end</span></a>
+					
+				</li>
+				
+				<li>
+					<a href="#clear-both"><span>clear both</span></a>
+					
+				</li>
+				
+				<li>
+					<a href="#clear-none"><span>clear none</span></a>
+					
+				</li>
+				
+				<li>
+					<a href="#clear-right"><span>clear right</span></a>
+					
+				</li>
+				
+				<li>
+					<a href="#clear-left"><span>clear left</span></a>
+					
+				</li>
+				
+	</ul>
+	
+				</li>
+				
+	</ul>
+	
+	</nav>
+</header>
+
+<main>
+	
+		<section id="float-utils">
+			<h2>Float Utils</h2>
+			<div>
+				
+				
+		<section id="introduction">
+			<h3>Introduction</h3>
+			<div>
+				<p>A collection of dynamically generated float and clear utility classes.</p>
+<p>Class names follow the <a href="http://docs.emmet.io/cheat-sheet/">Emmet</a> abbreviation
+syntax, with colons (&#39;:&#39;) replaced by two dashes (<code>--</code>) to follow BEM naming
+conventions.</p>
+<h4 id="available-classes">Available classes</h4>
+<ul>
+<li><code>.u-fl--start</code>: float: (left|right) (left in <code>LTR</code>, right in <code>RTL</code>)<ul>
+<li><code>[dir=ltr] .u-fl--start</code>: float: left</li>
+<li><code>[dir=rtl] .u-fl--start</code>: float: right</li>
+</ul>
+</li>
+<li><code>.u-fl--end</code>: float: (right|left) (right in <code>LTR</code>, left in <code>RTL</code>)<ul>
+<li><code>[dir=ltr] .u-fl--end</code>: float: right</li>
+<li><code>[dir=rtl] .u-fl--end</code>: float: left</li>
+</ul>
+</li>
+<li><code>.u-fl--n</code>: float: none</li>
+<li><code>.u-fl--l</code>: float: left</li>
+<li><p><code>.u-fl--r</code>: float: right</p>
+</li>
+<li><p><code>.u-cl--start</code>: clear: (left|right) (left in <code>LTR</code>, right in <code>RTL</code>)</p>
+<ul>
+<li><code>[dir=ltr] .u-cl--start</code>: clear: left</li>
+<li><code>[dir=rtl] .u-cl--start</code>: clear: right</li>
+</ul>
+</li>
+<li><code>.u-cl--end</code>: clear: (right|left) (right in <code>LTR</code>, left in <code>RTL</code>)<ul>
+<li><code>[dir=ltr] .u-cl--end</code>: clear: right</li>
+<li><code>[dir=rtl] .u-cl--end</code>: clear: left</li>
+</ul>
+</li>
+<li><code>.u-cl--b</code>: clear: both</li>
+<li><code>.u-cl--n</code>: clear: none</li>
+<li><code>.u-cl--l</code>: clear: left</li>
+<li><code>.u-cl--r</code>: clear: right</li>
+</ul>
+<h4 id="installation">Installation</h4>
+<p>Using npm:</p>
+<pre><code class="lang-sh">npm i -S jigsass-utils-float
+</code></pre>
+<h4 id="usage">Usage</h4>
+<p>Import JigSass Utils Float into your main scss file near its very end, together with all
+other utilities (utilities should always be the last to be imported).</p>
+<pre><code class="lang-scss">@import &#39;path/to/jigsass-utils-float/scss/index&#39;;
+</code></pre>
+<p>Like all other JigSass Utils, JigSass Float does not automatically generate any CSS
+when imported. You would need to explicitly indicate that each individual float or clear
+class should actually be generated in each component or object it is used in
+(clarification: This will include style declarations inside <code>.foo</code> and .<code>bar</code>):</p>
+<pre><code class="lang-scss">// _c.foo.scss
+.foo {
+  @include jigsass-util(u-fl, $modifier: n); // &lt;-- float: none;
+
+  ...
+}
+</code></pre>
+<pre><code class="lang-scss">// _c.bar.scss
+.bar {
+  @include jigsass-util(u-cl, $modifier: b);  // &lt;-- clear: both
+  @include jigsass-util(u-cl, $modifier: r, $from: large); // &lt;-- clear: right from large bp and on.
+
+  ...
+}
+</code></pre>
+<p>Doing so helps us a great deal with portability, as no matter where we import component or object
+partials, the correct utility classes will be generated. Think of it as a poor man&#39;s dependency
+management.</p>
+<p>Developer communication is also assisted by including &quot;dependencies&quot; wherever they are required,
+as anyone going through a partial, can easily understand how it should be marked up with just a
+glance.</p>
+<p>As far as bloat goes, just don&#39;t worry about it - the actual styles will only be generated once,
+at the location in the cascade where the Jigsass Float partial was imported into the main file.</p>
+<p>JigSass Float classes are responsive-enabled, using <a href="https://txhawks.github.io/jigsass-tools-mq/">JigSass MQ</a>
+and the breakpoints defined in the <a href="https://txhawks.github.io/jigsass-tools-mq/#variable-jigsass-breakpoints">$jigsass-breakpoints</a> variable.</p>
+<p>Based on the breakpoint arguments passed to <code>jigsass-util</code> when including a float or clear class,
+responsive modifiers are generated according to the following logic:</p>
+<pre><code class="lang-scss">.u-fl--&lt;modifier&gt;[-[-from-&lt;breakpoint-name&gt;][-until-&lt;breakpoint-name&gt;][-misc-&lt;breakpoint-name&gt;]]
+</code></pre>
+<p>So, assuming the <code>medium</code>, <code>large</code> and <code>landscape</code> breakpoints are defined in <code>$jigsass-breakpoints</code>
+as <code>600px</code>, <code>1024px</code> and <code>(orientation: landscape)</code> respectively,</p>
+<pre><code class="lang-scss">@include jigsass-util(u-fl, $modifier: end);
+</code></pre>
+<p>will generate the <code>.u-fl--end</code> class, which is not limited to any media-query.</p>
+<pre><code class="lang-scss">@include jigsass-util(u-fl, $modifier: start, $until: medium);
+</code></pre>
+<p>will generate the <code>.u-fl--start--until-medium</code> class, which will be in effect at
+<code>(max-width: 37.49em)</code> and will override styles in the default class until that point.</p>
+<pre><code class="lang-scss">@include jigsass-util(u-fl, $modifier: c, $from: large, $misc: landscape);
+</code></pre>
+<p>will generate the <code>.u-fl--c--from-large-when-landscape</code> class, which will go into
+effect at <code>(min-width: 64em) and (orientation: landscape)</code> and will override styles in the default
+class under these  conditions.</p>
+<p><strong>License:</strong> MIT</p>
+
+				
+			</div>
+		</section>
+		
+		<section id="float-start">
+			<h3>float start</h3>
+			<div>
+				<p><strong>.u-fl--start</strong></p>
+<p>Float an element to the start</p>
+<h4 id="include-with-">Include with:</h4>
+<pre><code class="lang-scss">@include jigsass-util(u-fl, $modifier: start [, $from, $until, $misc]);
+</code></pre>
+<h4 id="example">Example</h4>
+<pre><code class="lang-example:html">&lt;p class=&#39;fpo  u-fl--start&#39;&gt;
+This element is floated to the start
+&lt;/p&gt;
+</code></pre>
+
+				
+			</div>
+		</section>
+		
+		<section id="float-end">
+			<h3>float end</h3>
+			<div>
+				<p><strong>.u-fl--end</strong></p>
+<p>Float an element to the end</p>
+<h4 id="include-with-">Include with:</h4>
+<pre><code class="lang-scss">@include jigsass-util(u-fl, $modifier: end [, $from, $until, $misc]);
+</code></pre>
+<h4 id="example">Example</h4>
+<pre><code class="lang-example:html">&lt;p class=&#39;fpo  u-fl--end&#39;&gt;
+This element is floated to the end
+&lt;/p&gt;
+</code></pre>
+
+				
+			</div>
+		</section>
+		
+		<section id="float-none">
+			<h3>float none</h3>
+			<div>
+				<p><strong>.u-fl--n</strong></p>
+<p>Prevent an element from being floated</p>
+<h4 id="include-with-">Include with:</h4>
+<pre><code class="lang-scss">@include jigsass-util(u-fl, $modifier: n [, $from, $until, $misc]);
+</code></pre>
+<h4 id="example">Example</h4>
+<pre><code class="lang-example:html">&lt;p class=&#39;fpo  u-fl--n&#39;&gt;
+This element is not floated.
+&lt;/p&gt;
+</code></pre>
+
+				
+			</div>
+		</section>
+		
+		<section id="float-right">
+			<h3>float right</h3>
+			<div>
+				<p><strong>.u-fl--r</strong></p>
+<p>Float an element to the right</p>
+<h4 id="include-with-">Include with:</h4>
+<pre><code class="lang-scss">@include jigsass-util(u-fl, $modifier: r [, $from, $until, $misc]);
+</code></pre>
+<h4 id="example">Example</h4>
+<pre><code class="lang-example:html">&lt;p class=&#39;fpo  u-fl--r&#39;&gt;
+This element is floated to the right
+&lt;/p&gt;
+</code></pre>
+
+				
+			</div>
+		</section>
+		
+		<section id="float-left">
+			<h3>float left</h3>
+			<div>
+				<p><strong>.u-fl--l</strong></p>
+<p>Float an element to the left</p>
+<h4 id="include-with-">Include with:</h4>
+<pre><code class="lang-scss">@include jigsass-util(u-fl, $modifier: l [, $from, $until, $misc]);
+</code></pre>
+<h4 id="example">Example</h4>
+<pre><code class="lang-example:html">&lt;p class=&#39;fpo  u-fl--l&#39;&gt;
+This element is floated to the left
+&lt;/p&gt;
+</code></pre>
+
+				
+			</div>
+		</section>
+		
+		<section id="clear-start">
+			<h3>clear start</h3>
+			<div>
+				<p><strong>.u-cl--start</strong></p>
+<p>Clear an element on its start</p>
+<h4 id="include-with-">Include with:</h4>
+<pre><code class="lang-scss">@include jigsass-util(u-cl, $modifier: start [, $from, $until, $misc]);
+</code></pre>
+<h4 id="example">Example</h4>
+<pre><code class="lang-example:html">&lt;p class=&#39;fpo  u-cl--start&#39;&gt;
+This element is cleared on its start
+&lt;/p&gt;
+</code></pre>
+
+				
+			</div>
+		</section>
+		
+		<section id="clear-end">
+			<h3>clear end</h3>
+			<div>
+				<p><strong>.u-cl--end</strong></p>
+<p>Clear an element on its end</p>
+<h4 id="include-with-">Include with:</h4>
+<pre><code class="lang-scss">@include jigsass-util(u-cl, $modifier: end [, $from, $until, $misc]);
+</code></pre>
+<h4 id="example">Example</h4>
+<pre><code class="lang-example:html">&lt;p class=&#39;fpo  u-cl--end&#39;&gt;
+This element is cleared on its end
+&lt;/p&gt;
+</code></pre>
+
+				
+			</div>
+		</section>
+		
+		<section id="clear-both">
+			<h3>clear both</h3>
+			<div>
+				<p><strong>.u-cl--b</strong></p>
+<p>Clear an element on its both</p>
+<h4 id="include-with-">Include with:</h4>
+<pre><code class="lang-scss">@include jigsass-util(u-cl, $modifier: b [, $from, $until, $misc]);
+</code></pre>
+<h4 id="example">Example</h4>
+<pre><code class="lang-example:html">&lt;p class=&#39;fpo  u-cl--b&#39;&gt;
+This element is cleared on both it sides
+&lt;/p&gt;
+</code></pre>
+
+				
+			</div>
+		</section>
+		
+		<section id="clear-none">
+			<h3>clear none</h3>
+			<div>
+				<p><strong>.u-cl--n</strong></p>
+<p>Prevent an element from being cleared</p>
+<h4 id="include-with-">Include with:</h4>
+<pre><code class="lang-scss">@include jigsass-util(u-cl, $modifier: n [, $from, $until, $misc]);
+</code></pre>
+<h4 id="example">Example</h4>
+<pre><code class="lang-example:html">&lt;p class=&#39;fpo  u-cl--n&#39;&gt;
+This element is not cleared.
+&lt;/p&gt;
+</code></pre>
+
+				
+			</div>
+		</section>
+		
+		<section id="clear-right">
+			<h3>clear right</h3>
+			<div>
+				<p><strong>.u-cl--r</strong></p>
+<p>Clear an element on its right</p>
+<h4 id="include-with-">Include with:</h4>
+<pre><code class="lang-scss">@include jigsass-util(u-cl, $modifier: r [, $from, $until, $misc]);
+</code></pre>
+<h4 id="example">Example</h4>
+<pre><code class="lang-example:html">&lt;p class=&#39;fpo  u-cl--r&#39;&gt;
+This element is cleared on its right
+&lt;/p&gt;
+</code></pre>
+
+				
+			</div>
+		</section>
+		
+		<section id="clear-left">
+			<h3>clear left</h3>
+			<div>
+				<p><strong>.u-cl--l</strong></p>
+<p>Clear an element on its left</p>
+<h4 id="include-with-">Include with:</h4>
+<pre><code class="lang-scss">@include jigsass-util(u-cl, $modifier: l [, $from, $until, $misc]);
+</code></pre>
+<h4 id="example">Example</h4>
+<pre><code class="lang-example:html">&lt;p class=&#39;fpo  u-cl--l&#39;&gt;
+This element is cleared on its left
+&lt;/p&gt;
+</code></pre>
+
+				
+			</div>
+		</section>
+		
+			</div>
+		</section>
+		
+	<footer>Last modified Monday, 11 April 2016 22:19</footer>
+</main>
+<script src="prism.js"></script>
+<script src="examples.js"></script>
+<script src="script.js"></script>
+

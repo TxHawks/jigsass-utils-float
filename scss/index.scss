@@ -1,0 +1,282 @@
+// *************************************
+//
+// # jigsass-utils-float
+// -> Float-related utility classes
+//
+// Author: TxHawks (tofu.hawks@gmail.com)
+// https://txhawks.github.com/jigsass-utils-float/
+//
+// *************************************
+
+@charset 'UTF-8';
+
+
+// -------------------------------------
+// Dependencies
+// -------------------------------------
+
+@if (not mixin-exists(jigsass-define-util)) {
+  @error '`jigsass-utils-flot` has a dependency on `jigsass-tools-selectors`. ' +
+    'Please import it before this file.';
+}
+
+
+
+
+
+// -------------------------------------
+// Introduction
+// -------------------------------------
+
+// stylelint-disable
+/* ---
+section: Float Utils
+title: Introduction
+order: -10
+---
+
+A collection of dynamically generated float and clear utility classes.
+
+Class names follow the [Emmet](http://docs.emmet.io/cheat-sheet/) abbreviation
+syntax, with colons (':') replaced by two dashes (`--`) to follow BEM naming
+conventions.
+
+#### Available classes
+
+  - `.u-fl--start`: float: (left|right) (left in `LTR`, right in `RTL`)
+    - `[dir=ltr] .u-fl--start`: float: left
+    - `[dir=rtl] .u-fl--start`: float: right
+  - `.u-fl--end`: float: (right|left) (right in `LTR`, left in `RTL`)
+    - `[dir=ltr] .u-fl--end`: float: right
+    - `[dir=rtl] .u-fl--end`: float: left
+  - `.u-fl--n`: float: none
+  - `.u-fl--l`: float: left
+  - `.u-fl--r`: float: right
+
+  - `.u-cl--start`: clear: (left|right) (left in `LTR`, right in `RTL`)
+    - `[dir=ltr] .u-cl--start`: clear: left
+    - `[dir=rtl] .u-cl--start`: clear: right
+  - `.u-cl--end`: clear: (right|left) (right in `LTR`, left in `RTL`)
+    - `[dir=ltr] .u-cl--end`: clear: right
+    - `[dir=rtl] .u-cl--end`: clear: left
+  - `.u-cl--b`: clear: both
+  - `.u-cl--n`: clear: none
+  - `.u-cl--l`: clear: left
+  - `.u-cl--r`: clear: right
+
+#### Installation
+
+Using npm:
+
+```sh
+npm i -S jigsass-utils-float
+```
+
+#### Usage
+Import JigSass Utils Float into your main scss file near its very end, together with all
+other utilities (utilities should always be the last to be imported).
+
+```scss
+@import 'path/to/jigsass-utils-float/scss/index';
+```
+
+Like all other JigSass Utils, JigSass Float does not automatically generate any CSS
+when imported. You would need to explicitly indicate that each individual float or clear
+class should actually be generated in each component or object it is used in
+(clarification: This will include style declarations inside `.foo` and .`bar`):
+
+```scss
+// _c.foo.scss
+.foo {
+  @include jigsass-util(u-fl, $modifier: n); // <-- float: none;
+
+  ...
+}
+```
+
+```scss
+// _c.bar.scss
+.bar {
+  @include jigsass-util(u-cl, $modifier: b);  // <-- clear: both
+  @include jigsass-util(u-cl, $modifier: r, $from: large); // <-- clear: right from large bp and on.
+
+  ...
+}
+```
+
+Doing so helps us a great deal with portability, as no matter where we import component or object
+partials, the correct utility classes will be generated. Think of it as a poor man's dependency
+management.
+
+Developer communication is also assisted by including "dependencies" wherever they are required,
+as anyone going through a partial, can easily understand how it should be marked up with just a
+glance.
+
+As far as bloat goes, just don't worry about it - the actual styles will only be generated once,
+at the location in the cascade where the Jigsass Float partial was imported into the main file.
+
+
+JigSass Float classes are responsive-enabled, using [JigSass MQ](https://txhawks.github.io/jigsass-tools-mq/)
+and the breakpoints defined in the [$jigsass-breakpoints](https://txhawks.github.io/jigsass-tools-mq/#variable-jigsass-breakpoints) variable.
+
+Based on the breakpoint arguments passed to `jigsass-util` when including a float or clear class,
+responsive modifiers are generated according to the following logic:
+
+```scss
+.u-fl--<modifier>[-[-from-<breakpoint-name>][-until-<breakpoint-name>][-misc-<breakpoint-name>]]
+```
+
+So, assuming the `medium`, `large` and `landscape` breakpoints are defined in `$jigsass-breakpoints`
+as `600px`, `1024px` and `(orientation: landscape)` respectively,
+
+```scss
+@include jigsass-util(u-fl, $modifier: end);
+```
+will generate the `.u-fl--end` class, which is not limited to any media-query.
+
+```scss
+@include jigsass-util(u-fl, $modifier: start, $until: medium);
+```
+
+will generate the `.u-fl--start--until-medium` class, which will be in effect at
+`(max-width: 37.49em)` and will override styles in the default class until that point.
+
+```scss
+@include jigsass-util(u-fl, $modifier: c, $from: large, $misc: landscape);
+```
+
+will generate the `.u-fl--c--from-large-when-landscape` class, which will go into
+effect at `(min-width: 64em) and (orientation: landscape)` and will override styles in the default
+class under these  conditions.
+
+
+**License:** MIT
+
+*/
+// stylelint-enable
+
+
+
+
+
+// -------------------------------------
+// Variables
+// -------------------------------------
+
+/// A constant used for generating float and clear utility classes.
+/// ---
+/// @type Map
+/// ---
+$_jigsass-float-map: (
+  n: none,
+  l: left,
+  b: both,
+  r: right,
+  start: start,
+  end: end
+);
+
+
+// Used internally to store doclets
+$_doclet-store: () !default;
+
+// Used internally to ordering doclets
+$_jigsass-util-fl-i: 1;
+
+
+
+
+
+// -------------------------------------
+// Definitions
+// -------------------------------------
+
+@each $util in u-fl u-cl {
+  @include jigsass-define-util($util) {
+    @if (not $jigsass-util-modifier) {
+      @error 'jigsass-utils-text: #{$jigsass-util-name} must be passed A ' +
+        'value through a modifier.';
+    }
+
+    $_prop: if(str-slice($jigsass-util-name, 3) == fl, float, clear);
+    $_value: map-get($_jigsass-float-map, $jigsass-util-modifier);
+
+    @if ($jigsass-util-modifier == start) {
+      @include jigsass-bidi($_prop, $_value);
+
+      [dir=ltr] & {
+        #{$_prop}: left;
+      }
+
+      [dir=rtl] & {
+        #{$_prop}: right;
+      }
+    }
+    @else if ($jigsass-util-modifier == end) {
+      @include jigsass-bidi($_prop, $_value);
+
+      [dir=ltr] & {
+        #{$_prop}: right;
+      }
+
+      [dir=rtl] & {
+        #{$_prop}: left;
+      }
+    }
+    @else if (
+      $_prop == clear or
+      $_value != both
+    ) {
+      #{$_prop}: $_value;
+    }
+
+    $_doclet: $jigsass-util-name + ($jigsass-util-modifier or '');
+    @if (
+      not index($_doclet-store, $_doclet) and
+      ($_prop == clear or $_value != both)
+    ) {
+      $_doclet-store: append($_doclet-store, $_doclet) !global;
+      $_order: if($_prop == fl, 0, 100);
+      // stylelint-disable
+
+/* ---
+section: Float Utils
+title: #{$_prop} #{map-get($_jigsass-float-map, $jigsass-util-modifier)}
+order: #{$_jigsass-util-fl-i + $_order}
+---
+**.#{$jigsass-util-name}--#{$jigsass-util-modifier}**
+
+#{if(
+  $_prop == float,
+  if($_value == none, 'Prevent an element from being floated', 'Float an element to the ' + $_value),
+  if($_value == none, 'Prevent an element from being cleared', 'Clear an element on its ' + $_value)
+)}
+
+
+#### Include with:
+
+```scss
+@include jigsass-util(#{$jigsass-util-name}, $modifier: #{$jigsass-util-modifier} [, $from, $until, $misc]);
+```
+
+#### Example
+
+```example:html
+<p class='fpo  #{$jigsass-util-name}--#{$jigsass-util-modifier}'>
+#{if(
+  $_value == none,
+  'This element is not ' + $_prop + 'ed.',
+  if(
+    $_value == both,
+    This element is cleared on both it sides,
+    'This element is ' + $_prop + 'ed' + if($_prop == float, ' to the ', ' on its ') + $_value
+  )
+)}
+</p>
+```
+*/
+      $_jigsass-util-fl-i: $_jigsass-util-fl-i + 1 !global;
+      // stylelint-enable
+    }
+  }
+}
