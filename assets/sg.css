@@ -1,0 +1,499 @@
+/* ---
+section: Float Utils
+title: Introduction
+order: -10
+---
+
+A collection of dynamically generated float and clear utility classes.
+
+Class names follow the [Emmet](http://docs.emmet.io/cheat-sheet/) abbreviation
+syntax, with colons (':') replaced by two dashes (`--`) to follow BEM naming
+conventions.
+
+#### Available classes
+
+  - `.u-fl--start`: float: (left|right) (left in `LTR`, right in `RTL`)
+    - `[dir=ltr] .u-fl--start`: float: left
+    - `[dir=rtl] .u-fl--start`: float: right
+  - `.u-fl--end`: float: (right|left) (right in `LTR`, left in `RTL`)
+    - `[dir=ltr] .u-fl--end`: float: right
+    - `[dir=rtl] .u-fl--end`: float: left
+  - `.u-fl--n`: float: none
+  - `.u-fl--l`: float: left
+  - `.u-fl--r`: float: right
+
+  - `.u-cl--start`: clear: (left|right) (left in `LTR`, right in `RTL`)
+    - `[dir=ltr] .u-cl--start`: clear: left
+    - `[dir=rtl] .u-cl--start`: clear: right
+  - `.u-cl--end`: clear: (right|left) (right in `LTR`, left in `RTL`)
+    - `[dir=ltr] .u-cl--end`: clear: right
+    - `[dir=rtl] .u-cl--end`: clear: left
+  - `.u-cl--b`: clear: both
+  - `.u-cl--n`: clear: none
+  - `.u-cl--l`: clear: left
+  - `.u-cl--r`: clear: right
+
+#### Installation
+
+Using npm:
+
+```sh
+npm i -S jigsass-utils-float
+```
+
+#### Usage
+Import JigSass Utils Float into your main scss file near its very end, together with all
+other utilities (utilities should always be the last to be imported).
+
+```scss
+@import 'path/to/jigsass-utils-float/scss/index';
+```
+
+Like all other JigSass Utils, JigSass Float does not automatically generate any CSS
+when imported. You would need to explicitly indicate that each individual float or clear
+class should actually be generated in each component or object it is used in
+(clarification: This will include style declarations inside `.foo` and .`bar`):
+
+```scss
+// _c.foo.scss
+.foo {
+  @include jigsass-util(u-fl, $modifier: n); // <-- float: none;
+
+  ...
+}
+```
+
+```scss
+// _c.bar.scss
+.bar {
+  @include jigsass-util(u-cl, $modifier: b);  // <-- clear: both
+  @include jigsass-util(u-cl, $modifier: r, $from: large); // <-- clear: right from large bp and on.
+
+  ...
+}
+```
+
+Doing so helps us a great deal with portability, as no matter where we import component or object
+partials, the correct utility classes will be generated. Think of it as a poor man's dependency
+management.
+
+Developer communication is also assisted by including "dependencies" wherever they are required,
+as anyone going through a partial, can easily understand how it should be marked up with just a
+glance.
+
+As far as bloat goes, just don't worry about it - the actual styles will only be generated once,
+at the location in the cascade where the Jigsass Float partial was imported into the main file.
+
+
+JigSass Float classes are responsive-enabled, using [JigSass MQ](https://txhawks.github.io/jigsass-tools-mq/)
+and the breakpoints defined in the [$jigsass-breakpoints](https://txhawks.github.io/jigsass-tools-mq/#variable-jigsass-breakpoints) variable.
+
+Based on the breakpoint arguments passed to `jigsass-util` when including a float or clear class,
+responsive modifiers are generated according to the following logic:
+
+```scss
+.u-fl--<modifier>[-[-from-<breakpoint-name>][-until-<breakpoint-name>][-misc-<breakpoint-name>]]
+```
+
+So, assuming the `medium`, `large` and `landscape` breakpoints are defined in `$jigsass-breakpoints`
+as `600px`, `1024px` and `(orientation: landscape)` respectively,
+
+```scss
+@include jigsass-util(u-fl, $modifier: end);
+```
+will generate the `.u-fl--end` class, which is not limited to any media-query.
+
+```scss
+@include jigsass-util(u-fl, $modifier: start, $until: medium);
+```
+
+will generate the `.u-fl--start--until-medium` class, which will be in effect at
+`(max-width: 37.49em)` and will override styles in the default class until that point.
+
+```scss
+@include jigsass-util(u-fl, $modifier: c, $from: large, $misc: landscape);
+```
+
+will generate the `.u-fl--c--from-large-when-landscape` class, which will go into
+effect at `(min-width: 64em) and (orientation: landscape)` and will override styles in the default
+class under these  conditions.
+
+
+**License:** MIT
+
+*/
+.u-fl--start {
+  float: left;
+  /* ---
+section: Float Utils
+title: float start
+order: 101
+---
+**.u-fl--start**
+
+Float an element to the start
+
+
+#### Include with:
+
+```scss
+@include jigsass-util(u-fl, $modifier: start [, $from, $until, $misc]);
+```
+
+#### Example
+
+```example:html
+<p class='fpo  u-fl--start'>
+This element is floated to the start
+</p>
+```
+*/
+}
+
+[dir=ltr] .u-fl--start {
+  float: left;
+}
+
+[dir=rtl] .u-fl--start {
+  float: right;
+}
+
+.u-fl--end {
+  float: right;
+  /* ---
+section: Float Utils
+title: float end
+order: 102
+---
+**.u-fl--end**
+
+Float an element to the end
+
+
+#### Include with:
+
+```scss
+@include jigsass-util(u-fl, $modifier: end [, $from, $until, $misc]);
+```
+
+#### Example
+
+```example:html
+<p class='fpo  u-fl--end'>
+This element is floated to the end
+</p>
+```
+*/
+}
+
+[dir=ltr] .u-fl--end {
+  float: right;
+}
+
+[dir=rtl] .u-fl--end {
+  float: left;
+}
+
+.u-fl--n {
+  float: none;
+  /* ---
+section: Float Utils
+title: float none
+order: 103
+---
+**.u-fl--n**
+
+Prevent an element from being floated
+
+
+#### Include with:
+
+```scss
+@include jigsass-util(u-fl, $modifier: n [, $from, $until, $misc]);
+```
+
+#### Example
+
+```example:html
+<p class='fpo  u-fl--n'>
+This element is not floated.
+</p>
+```
+*/
+}
+
+.u-fl--r {
+  float: right;
+  /* ---
+section: Float Utils
+title: float right
+order: 104
+---
+**.u-fl--r**
+
+Float an element to the right
+
+
+#### Include with:
+
+```scss
+@include jigsass-util(u-fl, $modifier: r [, $from, $until, $misc]);
+```
+
+#### Example
+
+```example:html
+<p class='fpo  u-fl--r'>
+This element is floated to the right
+</p>
+```
+*/
+}
+
+.u-fl--l {
+  float: left;
+  /* ---
+section: Float Utils
+title: float left
+order: 105
+---
+**.u-fl--l**
+
+Float an element to the left
+
+
+#### Include with:
+
+```scss
+@include jigsass-util(u-fl, $modifier: l [, $from, $until, $misc]);
+```
+
+#### Example
+
+```example:html
+<p class='fpo  u-fl--l'>
+This element is floated to the left
+</p>
+```
+*/
+}
+
+.u-cl--start {
+  clear: left;
+  /* ---
+section: Float Utils
+title: clear start
+order: 106
+---
+**.u-cl--start**
+
+Clear an element on its start
+
+
+#### Include with:
+
+```scss
+@include jigsass-util(u-cl, $modifier: start [, $from, $until, $misc]);
+```
+
+#### Example
+
+```example:html
+<p class='fpo  u-cl--start'>
+This element is cleared on its start
+</p>
+```
+*/
+}
+
+[dir=ltr] .u-cl--start {
+  clear: left;
+}
+
+[dir=rtl] .u-cl--start {
+  clear: right;
+}
+
+.u-cl--end {
+  clear: right;
+  /* ---
+section: Float Utils
+title: clear end
+order: 107
+---
+**.u-cl--end**
+
+Clear an element on its end
+
+
+#### Include with:
+
+```scss
+@include jigsass-util(u-cl, $modifier: end [, $from, $until, $misc]);
+```
+
+#### Example
+
+```example:html
+<p class='fpo  u-cl--end'>
+This element is cleared on its end
+</p>
+```
+*/
+}
+
+[dir=ltr] .u-cl--end {
+  clear: right;
+}
+
+[dir=rtl] .u-cl--end {
+  clear: left;
+}
+
+.u-cl--b {
+  clear: both;
+  /* ---
+section: Float Utils
+title: clear both
+order: 108
+---
+**.u-cl--b**
+
+Clear an element on its both
+
+
+#### Include with:
+
+```scss
+@include jigsass-util(u-cl, $modifier: b [, $from, $until, $misc]);
+```
+
+#### Example
+
+```example:html
+<p class='fpo  u-cl--b'>
+This element is cleared on both it sides
+</p>
+```
+*/
+}
+
+.u-cl--n {
+  clear: none;
+  /* ---
+section: Float Utils
+title: clear none
+order: 109
+---
+**.u-cl--n**
+
+Prevent an element from being cleared
+
+
+#### Include with:
+
+```scss
+@include jigsass-util(u-cl, $modifier: n [, $from, $until, $misc]);
+```
+
+#### Example
+
+```example:html
+<p class='fpo  u-cl--n'>
+This element is not cleared.
+</p>
+```
+*/
+}
+
+.u-cl--r {
+  clear: right;
+  /* ---
+section: Float Utils
+title: clear right
+order: 110
+---
+**.u-cl--r**
+
+Clear an element on its right
+
+
+#### Include with:
+
+```scss
+@include jigsass-util(u-cl, $modifier: r [, $from, $until, $misc]);
+```
+
+#### Example
+
+```example:html
+<p class='fpo  u-cl--r'>
+This element is cleared on its right
+</p>
+```
+*/
+}
+
+.u-cl--l {
+  clear: left;
+  /* ---
+section: Float Utils
+title: clear left
+order: 111
+---
+**.u-cl--l**
+
+Clear an element on its left
+
+
+#### Include with:
+
+```scss
+@include jigsass-util(u-cl, $modifier: l [, $from, $until, $misc]);
+```
+
+#### Example
+
+```example:html
+<p class='fpo  u-cl--l'>
+This element is cleared on its left
+</p>
+```
+*/
+}
+
+html {
+  font-size: 37.5%;
+}
+
+body {
+  font-size: 2.6666666667em;
+  line-height: 4rem;
+}
+
+html {
+  font-family: sans-serif;
+}
+
+body {
+  margin: 0 !important;
+}
+
+.fpo {
+  background-color: #09a5d9;
+  color: #fff;
+  padding: 1rem;
+}
+
+figure,
+ul,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  margin: 0;
+  padding: 0;
+}
